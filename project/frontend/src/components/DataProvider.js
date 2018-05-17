@@ -1,30 +1,34 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Table from './Table';
 
 
 class DataProvider extends Component {
   static propTypes = {
-    endpoint: PropTypes.string.isRequired,
-    render: PropTypes.func.isRequired
+    loaded: PropTypes.bool.isRequired,
+    placeholder: PropTypes.string.isRequired
   };
-  state = {
-      data: [],
-      loaded: false,
-      placeholder: "Loading..."
-    };
-  componentDidMount() {
-    fetch(this.props.endpoint)
-      .then(response => {
-        if (response.status !== 200) {
-          return this.setState({ placeholder: "Something went wrong" });
-        }
-        return response.json();
-      })
-      .then(data => this.setState({ data: data, loaded: true }));
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: this.props.data,
+      loaded: this.props.loaded,
+      placeholder: this.props.placeholder
+    }
   }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      data: nextProps.data,
+      loaded: nextProps.loaded,
+      placeholder: nextProps.placeholder
+    });
+  }
+
   render() {
     const { data, loaded, placeholder } = this.state;
-    return loaded ? this.props.render(data) : <p>{placeholder}</p>;
+    return loaded ? <Table data={this.state.data} /> : <p>{placeholder}</p>;
   }
 }
 export default DataProvider;

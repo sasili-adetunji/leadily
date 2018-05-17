@@ -1,0 +1,5 @@
+htmlcov
+.vscode
+.git
+.coverage
+db.sqlite3

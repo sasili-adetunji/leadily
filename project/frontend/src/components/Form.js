@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 
 class Form extends Component {
   static propTypes = {
-    submitForm: PropTypes.func.isRequired
+    submitForm: PropTypes.func.isRequired,
+    message: PropTypes.string.isRequired
   };
   state = {
     name: "",
@@ -73,7 +74,7 @@ class Form extends Component {
           </div>
           <div className="control">
             <button type="submit" className="button is-info">
-              Send message
+              {this.props.message}
             </button>
           </div>
         </form>

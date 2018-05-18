@@ -6,7 +6,10 @@ import Table from './Table';
 class DataProvider extends Component {
   static propTypes = {
     loaded: PropTypes.bool.isRequired,
-    placeholder: PropTypes.string.isRequired
+    placeholder: PropTypes.string.isRequired,
+    deleteLeads: PropTypes.func.isRequired,
+    editLeads: PropTypes.func.isRequired
+
   };
 
   constructor(props) {
@@ -28,7 +31,10 @@ class DataProvider extends Component {
 
   render() {
     const { data, loaded, placeholder } = this.state;
-    return loaded ? <Table data={this.state.data} /> : <p>{placeholder}</p>;
+    return loaded ? <Table data={this.state.data} 
+                            deleteLead={this.props.deleteLeads}
+                            editLead={this.props.editLeads}
+                             /> : <p>{placeholder}</p>;
   }
 }
 export default DataProvider;

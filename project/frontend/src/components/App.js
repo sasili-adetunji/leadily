@@ -12,6 +12,8 @@ class App extends Component {
       placeholder: "Loading..."
     }
     this.submitForm = this.submitForm.bind(this);
+    this.deleteLeads = this.deleteLeads.bind(this);
+    this.editLeads = this.editLeads.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +51,31 @@ class App extends Component {
 
   }
 
+
+  deleteLeads(lead_id) {
+    const conf = {
+      method: "delete",
+      headers: new Headers({ "Content-Type": "application/json" })
+    };
+    fetch("api/lead/" + lead_id + "/", conf).then(response => {
+        fetch("api/lead/")
+          .then(response => {
+            if (response.status !== 200) {
+              this.setState({
+                placeholder: "Something went wrong"
+              })
+            }
+            return response.json();
+          })
+          .then(data => this.setState({data: data, loaded: true }))
+    })
+  }
+
+
+  editLeads(lead_id, name, email, message) {
+    const lead = { name, email, message };
+    // console.log(lead, lead_id)
+  }
   render() {
     return (
       <React.Fragment>
@@ -56,12 +83,14 @@ class App extends Component {
           data={this.state.data}
           loaded={this.state.loaded}
           placeholder={this.state.placeholder}
+          deleteLeads={this.deleteLeads}
+          editLeads={this.editLeads}
         />
 
         <Form
           submitForm={this.submitForm}
+          message="Save Lead"
         />
-        <h1>Wassup y'all</h1>
       </React.Fragment>
     );
   }

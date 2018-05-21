@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import shortid from "shortid";
+import TableRow from './TableRow';
 const uuid = shortid.generate;
 
 
@@ -11,7 +12,8 @@ class Table extends Component {
   }
   static propTypes = {
     deleteLead: PropTypes.func.isRequired,
-    editLead: PropTypes.func.isRequired
+    editLead: PropTypes.func.isRequired,
+    reloadData: PropTypes.func.isRequired
 
   };
   
@@ -41,9 +43,12 @@ class Table extends Component {
           </thead>
           <tbody>
             {data.map(el => (
-              <tr key={el.id}>{Object.entries(el).map(el => <td key={uuid()}>{el[1]}</td>)}
-                <td><a onClick={()=>this.handleEdit(el.id, el.name, el.email, el.message)}> Edit </a>  | <a onClick={()=>this.handleDelete(el.id)}>Delete </a></td>
-              </tr>
+              <TableRow
+                key={el.id}
+                el={el}
+                handleDelete={this.handleDelete}
+                reloadData={this.props.reloadData}
+              />
             ))}
           </tbody>
         </table>

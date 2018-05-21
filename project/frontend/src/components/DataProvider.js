@@ -8,7 +8,8 @@ class DataProvider extends Component {
     loaded: PropTypes.bool.isRequired,
     placeholder: PropTypes.string.isRequired,
     deleteLeads: PropTypes.func.isRequired,
-    editLeads: PropTypes.func.isRequired
+    editLeads: PropTypes.func.isRequired,
+    reloadData: PropTypes.func.isRequired
 
   };
 
@@ -34,6 +35,7 @@ class DataProvider extends Component {
     return loaded ? <Table data={this.state.data} 
                             deleteLead={this.props.deleteLeads}
                             editLead={this.props.editLeads}
+                            reloadData={this.props.reloadData}
                              /> : <p>{placeholder}</p>;
   }
 }

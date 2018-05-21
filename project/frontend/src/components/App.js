@@ -14,9 +14,23 @@ class App extends Component {
     this.submitForm = this.submitForm.bind(this);
     this.deleteLeads = this.deleteLeads.bind(this);
     this.editLeads = this.editLeads.bind(this);
+    this.reloadData = this.reloadData.bind(this);
   }
 
   componentDidMount() {
+    fetch("api/lead/")
+      .then(response => {
+        if (response.status !== 200) {
+          this.setState({
+            placeholder: "Something went wrong"
+          })
+        }
+        return response.json();
+      })
+      .then(data => this.setState({ data: data, loaded: true }));
+  }
+
+  reloadData() {
     fetch("api/lead/")
       .then(response => {
         if (response.status !== 200) {
@@ -37,16 +51,7 @@ class App extends Component {
       headers: new Headers({ "Content-Type": "application/json" })
     };
     fetch("api/lead/", conf).then(response => {
-      fetch("api/lead/")
-        .then(response => {
-          if (response.status !== 200) {
-            this.setState({
-              placeholder: "Something went wrong"
-            })
-          }
-          return response.json();
-        })
-        .then(data => this.setState({ data: data, loaded: true }));
+      this.reloadData();
     });
 
   }
@@ -85,6 +90,7 @@ class App extends Component {
           placeholder={this.state.placeholder}
           deleteLeads={this.deleteLeads}
           editLeads={this.editLeads}
+          reloadData={this.reloadData}
         />
 
         <Form
